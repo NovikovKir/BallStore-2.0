@@ -1,0 +1,46 @@
+@using System.Security.Claims
+@{
+    ViewData["Title"] = "Профиль пользователя";
+}
+
+<div class="container mt-4">
+    <h2>Профиль пользователя</h2>
+
+    @if (TempData["SuccessMessage"] != null)
+    {
+        <div class="alert alert-success">
+            @TempData["SuccessMessage"]
+        </div>
+    }
+
+    <div class="card mb-4">
+        <div class="card-body">
+            <h5>Имя пользователя</h5>
+            <p>@User.Identity?.Name</p>
+
+            <h5>Email</h5>
+            <p>admin@ballstore.com</p>
+
+            <h5>Роль</h5>
+            <p>Админ</p>
+
+            <h5>Баланс</h5>
+            <p>9 999 952 000,08 ₽</p>
+
+            <div class="d-flex gap-2">
+                <a asp-controller="Account" asp-action="ChangePassword" class="btn btn-outline-dark">
+                    <i class="fas fa-key"></i> Сменить пароль
+                </a>
+                <a class="btn btn-outline-dark" href="/Balance">
+                    <i class="fas fa-wallet2"></i> Пополнить баланс
+                </a>
+                <a class="btn btn-outline-dark" href="/Orders">
+                    <i class="fas fa-clock-history"></i> История заказов
+                </a>
+                <a class="btn btn-outline-dark" href="#" onclick="logout()">
+                    <i class="fas fa-box-arrow-right"></i> Выйти
+                </a>
+            </div>
+        </div>
+    </div>
+</div> 

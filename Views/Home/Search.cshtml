@@ -1,0 +1,119 @@
+@model IEnumerable<Product>
+
+@{
+    ViewData["Title"] = "Поиск товаров";
+}
+
+<style>
+    .btn-icon {
+        width: 36px;
+        height: 36px;
+        padding: 0;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border: none;
+        background-color: #f8f9fa;
+        transition: all 0.2s;
+    }
+
+    .btn-icon:hover {
+        background-color: #e9ecef;
+        transform: translateY(-2px);
+    }
+
+    .btn-icon i {
+        font-size: 1.1rem;
+        color: #6c757d;
+    }
+
+    .btn-icon[data-wishlist-button] i {
+        color: #dc3545;
+    }
+
+    .btn-icon[data-wishlist-button].in-wishlist i {
+        color: #dc3545;
+    }
+
+    .btn-icon[onclick*="addToCart"] i {
+        color: #0d6efd;
+    }
+
+    .product-card {
+        border: none;
+        transition: transform 0.2s, box-shadow 0.2s;
+    }
+
+    .product-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 0.5rem 1rem rgba(0,0,0,0.15) !important;
+    }
+
+    .price-block {
+        font-weight: 600;
+        color: #2c3e50;
+    }
+
+    .main-price {
+        font-size: 1.25rem;
+    }
+</style>
+
+<div class="container mt-4">
+    <div class="row mb-4">
+        <div class="col">
+            <div class="d-flex justify-content-between align-items-center">
+                <div>
+                    <h4 class="mb-2">Результаты поиска: "@ViewBag.SearchQuery"</h4>
+                    <p class="text-muted mb-0">Найдено товаров: @Model.Count()</p>
+                </div>
+                <a href="/" class="btn btn-outline-primary">
+                    <i class="bi bi-grid"></i> Вернуться в каталог
+                </a>
+            </div>
+        </div>
+    </div>
+
+    @if (!Model.Any())
+    {
+        <div class="alert alert-info">
+            <i class="bi bi-info-circle me-2"></i>По вашему запросу ничего не найдено
+        </div>
+    }
+    else
+    {
+        <div class="row row-cols-1 row-cols-md-2 row-cols-lg-4 g-4">
+            @foreach (var product in Model)
+            {
+                <div class="col">
+                    <div class="card h-100 product-card shadow-sm">
+                        <div class="product-image-container">
+                            <img src="@product.ImageUrl" class="product-image" alt="@product.Name">
+                        </div>
+                        <div class="card-body d-flex flex-column">
+                            <h5 class="card-title">@product.Name</h5>
+                            <p class="card-text flex-grow-1">@product.Description</p>
+                            <div class="d-flex justify-content-between align-items-center mt-3">
+                                <div class="price-block">
+                                    <div class="main-price">@product.Price.ToString("N0") ₽</div>
+                                </div>
+                                <div class="d-flex gap-2">
+                                    <button class="btn btn-icon" 
+                                            onclick="addToWishlist(@product.Id)"
+                                            data-wishlist-button
+                                            data-product-id="@product.Id">
+                                        <i class="fas fa-heart"></i>
+                                    </button>
+                                    <button class="btn btn-icon" onclick="addToCart(@product.Id)">
+                                        <i class="fas fa-shopping-cart"></i>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            }
+        </div>
+    }
+</div> 
